@@ -3,11 +3,10 @@
 #' @import elastic
 #' @import lazyeval
 #' @importFrom jsonlite unbox
-#' @name elasticdsl
+#' @name query
 #'
 #' @param index Index name
 #' @param type Type name, Default: NULL, so all types
-#' @param what In \code{\link{index}}, whether to get mappings, aliases, or settings.
 #' @param .obj An index object. If nothing passed defaults to all indices, equivalent to
 #' doing e.g., \code{localhost:9200/_search}
 #' @param x Input to various functions
@@ -27,13 +26,6 @@
 #' to execute the search with the query as given. In a sense, this is essentially like
 #' what \code{\link{dplyr}} does.
 #' @examples \dontrun{
-#' # Define index
-#' index("shakespeare")
-#' index("shakespeare", "scene")
-#' index("shakespeare", "act")
-#' index("plos")
-#' index("gbif")
-#'
 #' # DSL queries default to search across all indices
 #' bool(must_not = list(term=list(speaker="KING HENRY IV")))
 #'
@@ -66,42 +58,17 @@
 #' coords <- list(c(80.0, -20.0), c(-80.0, -20.0), c(-80.0, 60.0), c(40.0, 60.0), c(80.0, -20.0))
 #' index("geoshape") %>%
 #'    geoshape(field = "location", type = "polygon", coordinates = coords)
-#'
-#' # limit query
-#' filter()
 #' }
 NULL
 
 #' @export
-#' @rdname elasticdsl
-index <- function(index, type=NULL, what="mappings", ...){
-  structure(get_map(index, type, ...), class="index", index=index, type=type)
-}
-
-#' @export
-#' @rdname elasticdsl
-print.index <- function(x, ...){
-  cat("<index>", attr(x, "index"), "\n")
-  cat("  type:", attr(x, "type"), "\n")
-  nmz <- names(x)
-  cat("  mappings:", "\n")
-  for(i in seq_along(nmz)){
-    cat(sprintf("    %s:", nmz[i]), "\n")
-    for(j in seq_along(x[[i]]$properties)){
-      tmp <- x[[i]]$properties[j]
-      cat(sprintf("      %s: %s", names(tmp), tmp[[1]]$type), "\n")
-    }
-  }
-}
-
-#' @export
-#' @rdname elasticdsl
+#' @rdname query
 range <- function(.obj=list(), ..., boost=1, time_zone=NULL, execution=NULL, cache=FALSE) {
   range_(.obj, .dots = lazyeval::lazy_dots(...))
 }
 
 #' @export
-#' @rdname elasticdsl
+#' @rdname query
 range_ <- function(.obj=list(), ..., .dots) {
   dots <- lazyeval::all_dots(.dots, ...)
   query <- as.json(structure(dots, class=c("range","lazy_dots")))
@@ -109,13 +76,13 @@ range_ <- function(.obj=list(), ..., .dots) {
 }
 
 #' @export
-#' @rdname elasticdsl
+#' @rdname query
 bool <- function(.obj=list(), ...){
   bool_(.obj, .dots = lazyeval::lazy_dots(...))
 }
 
 #' @export
-#' @rdname elasticdsl
+#' @rdname query
 bool_ <- function(.obj=list(), ..., .dots){
   dots <- lazyeval::all_dots(.dots, ...)
   query <- as.json(structure(dots, class=c("bool","lazy_dots")))
@@ -123,13 +90,13 @@ bool_ <- function(.obj=list(), ..., .dots){
 }
 
 #' @export
-#' @rdname elasticdsl
+#' @rdname query
 geoshape <- function(.obj=list(), ..., field=NULL){
   geoshape_(.obj, .dots = lazyeval::lazy_dots(...), field=field)
 }
 
 #' @export
-#' @rdname elasticdsl
+#' @rdname query
 geoshape_ <- function(.obj=list(), ..., .dots, field=NULL){
   dots <- lazyeval::all_dots(.dots, ...)
   query <- as.json(structure(dots, class=c("geoshape","lazy_dots")), field=field)
@@ -137,23 +104,13 @@ geoshape_ <- function(.obj=list(), ..., .dots, field=NULL){
 }
 
 #' @export
-#' @rdname elasticdsl
-n <- function(x) x$hits$total
-
-#' @export
-#' @rdname elasticdsl
-filter <- function(){
-  list(filtered = TRUE)
-}
-
-#' @export
-#' @rdname elasticdsl
+#' @rdname query
 boosting <- function(.obj=list(), ..., negative_boost=NULL){
   boosting_(.obj, .dots = lazyeval::lazy_dots(...), negative_boost=negative_boost)
 }
 
 #' @export
-#' @rdname elasticdsl
+#' @rdname query
 boosting_ <- function(.obj=list(), ..., .dots, negative_boost=NULL){
   dots <- lazyeval::all_dots(.dots, ...)
   query <- as.json(structure(dots, class=c("boosting","lazy_dots")), negative_boost=negative_boost)
@@ -161,7 +118,7 @@ boosting_ <- function(.obj=list(), ..., .dots, negative_boost=NULL){
 }
 
 #' @export
-#' @rdname elasticdsl
+#' @rdname query
 common <- function(.obj=list(), field, query=NULL, cutoff_frequency=NULL, low_freq_operator=NULL,
                    minimum_should_match=NULL){
   common_(.obj, field=field, query=query,
@@ -171,7 +128,7 @@ common <- function(.obj=list(), field, query=NULL, cutoff_frequency=NULL, low_fr
 }
 
 #' @export
-#' @rdname elasticdsl
+#' @rdname query
 common_ <- function(.obj=list(), field, query=NULL, cutoff_frequency=NULL, low_freq_operator=NULL,
                     minimum_should_match=NULL){
   args <- ec(list(field=field, query=query,
@@ -244,40 +201,6 @@ get_eq <- function(y) {
 
 parse_range <- function(x){
   setNames(list(as.list(setNames(x$num, x$eq))), x$var)
-}
-
-# combine query statements
-combine <- function(.obj, ..., .dots){
-  list(.obj, lazyeval::all_dots(.dots, ...))
-}
-
-# execute on Search
-execute <- function(.obj, query){
-  Search_(.obj, body=query)
-}
-
-# explain <- function(.obj=list(), ...){
-#   lazyeval::lazy_dots(...)
-#   # explain_(.obj, .dots = lazyeval::lazy_dots(...))
-# }
-#
-# explain_ <- function(.obj=list(), ..., .dots){
-#   dots <- lazyeval::all_dots(.dots, ...)
-#   dots
-#   # structure(dots, class=c("explain","lazy_dots"))
-# }
-
-# shake <- get_map("shakespeare")
-# shake$line
-# # field names
-# names(shake$line$properties)
-# # field types
-# pluck(shake$line$properties, "type", "")
-# shake$scene
-# shake$act
-get_map <- function(index, type=NULL, ...){
-  tmp <- mapping_get(index, type, ...)
-  tmp[[index]]$mappings
 }
 
 # #' @export
