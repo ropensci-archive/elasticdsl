@@ -21,8 +21,20 @@ explain <- function(x, pretty = TRUE, ...){
 
 #' @export
 #' @rdname utils
-exec <- function(.obj, query){
-  Search_(attr(.obj, "index"), body=as.fjson(.obj))
+exec <- function(.obj, query, ...){
+  Search_(attr(.obj, "index"), body=as.fjson(.obj), ...)
+}
+
+#' @export
+#' @rdname utils
+fields <- function(x, ...){
+  structure(x, fields = lazyeval::lazy_dots(...))
+}
+
+#' @export
+#' @rdname utils
+size <- function(x, y){
+  structure(x, size = y)
 }
 
 # combine query statements

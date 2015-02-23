@@ -20,9 +20,7 @@ knitr::opts_chunk$set(
 * [API docs](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/index.html)
 * This client is being developed under `v1.4` of Elasticsearch.
 
-## Quick start
-
-### Install elasticdsl
+## Install elasticdsl
 
 ```{r eval=FALSE}
 install.packages("devtools")
@@ -33,17 +31,119 @@ devtools::install_github("ropensci/elasticdsl")
 library('elasticdsl')
 ```
 
-### Setup
+## Setup
 
 Instructions for installing, upgrading, starting Elasticsearch, and loading example data at [ropensci/elastic](https://github.com/ropensci/elastic#install-elasticsearch)
 
-### Initialization
+## Initialization
 
 The function `elastic::connect()` is used before doing anything else to set the connection details to your remote or local elasticdslsearch store. The details created by `connect()` are written to your options for the current session, and are used by `elasticdsl` functions.
 
 ```{r}
-library("elastic")
-connect(es_port = 9200)
+elastic::connect(es_port = 9200)
+```
+
+## Set the index to use
+
+```{r}
+index("shakespeare")
+```
+
+## Print query as pretty json
+
+```{r}
+index("shakespeare") %>%
+  filter() %>% 
+  ids(c(1, 2, 150)) %>%
+  explain()
+```
+
+## Execute query
+
+```{r}
+index("shakespeare") %>%
+  filter() %>% 
+  ids(c(1, 2)) %>%
+  exec() %>% 
+  n()
+```
+
+## n() to get number of results
+
+```{r}
+index("shakespeare") %>%
+  ids(c(1, 2)) %>%
+  exec() %>% 
+  n()
+```
+
+## Request size
+
+```{r}
+index("shakespeare") %>%
+  filter() %>% 
+  prefix(speaker = "we") %>%
+  size(2) %>% 
+  fields(play_name) %>% 
+  exec() %>% 
+  n()
+```
+
+## Request certain fields
+
+```{r}
+s <- index("shakespeare") %>%
+  filter() %>% 
+  prefix(speaker = "we") %>%
+  size(2)
+```
+
+```{r}
+s %>% fields(play_name) %>% exec() %>% .$hits %>% .$hits
+```
+
+```{r}
+s %>% fields(play_name, text_entry) %>% exec() %>% .$hits %>% .$hits
+```
+
+```{r}
+s %>% fields(play_name, text_entry, line_id) %>% exec() %>% .$hits %>% .$hits
+```
+
+## Filters vs. queries
+
+Filters are boolean queries and are much more computationally efficient than queries. 
+
+### Filters 
+
+`prefix` filter
+
+```{r}
+index("shakespeare") %>%
+  filter() %>% 
+  prefix(speaker = "we") %>%
+  exec() %>% 
+  n()
+```
+
+`ids` filter
+
+```{r}
+index("shakespeare") %>%
+  filter() %>% 
+  ids(c(1, 2, 150)) %>%
+  exec() %>% 
+  n()
+```
+
+### Queries
+
+`geoshape` query (filters have a much larger range of geo queries)
+
+```{r}
+index("geoshape") %>%
+  geoshape(field = "location", type = "envelope", coordinates = list(c(-30, 50), c(30, 0))) %>% 
+  n()
 ```
 
 ## Meta

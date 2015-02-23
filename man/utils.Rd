@@ -3,7 +3,9 @@
 \name{utils}
 \alias{exec}
 \alias{explain}
+\alias{fields}
 \alias{n}
+\alias{size}
 \alias{utils}
 \title{elastic DSL utilities}
 \usage{
@@ -11,7 +13,11 @@ n(x)
 
 explain(x, pretty = TRUE, ...)
 
-exec(.obj, query)
+exec(.obj, query, ...)
+
+fields(x, ...)
+
+size(x, y)
 }
 \arguments{
 \item{x}{Input}

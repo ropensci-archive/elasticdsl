@@ -205,6 +205,7 @@ as.fjson.comb <- function(x, ...){
   oper <- attr(x, "operand")
   out <- lapply(x, as.query, comb = TRUE)
   if(length(out) == 1) out <- out[[1]]
+
   if(!is.null(attr(x, "filtered")) && attr(x, "filtered")){
     if(is.null(oper)){
       quer <- list(query = list(filtered = list(filter = out)))
@@ -214,6 +215,15 @@ as.fjson.comb <- function(x, ...){
   } else {
     quer <- list(query = out)
   }
+
+  if(!is.null(attr(x, "fields"))){
+    quer$fields <- as.character(sapply(attr(x, "fields"), "[[", "expr"))
+  }
+
+  if(!is.null(attr(x, "size"))){
+    quer$size <- attr(x, "size")
+  }
+
   jsonlite::toJSON(quer, ..., auto_unbox = TRUE)
 }
 
@@ -272,48 +282,7 @@ as.fjson.ids <- function(x, ...){
   jsonlite::toJSON(alldat, ..., auto_unbox = TRUE)
 }
 
-as.query <- function(x, comb = FALSE, ...){
-  UseMethod("as.query")
-}
-
-as.query.prefix <- function(x, field, comb=FALSE, ...){
-  tmp <- setNames(list(x[[1]]$expr), names(x))
-  if(comb){
-    list(prefix = tmp)
-  } else {
-    list(query = list(constant_score = list(filter = list(prefix = tmp))))
-  }
-}
-
-as.query.ids <- function(x, comb=FALSE, ...){
-  tmp <- setNames(list(eval(x[[1]]$expr)), "values")
-  if(comb){
-    list(ids = tmp)
-  } else {
-    list(query = list(filtered = list(filter = list(ids = tmp))))
-  }
-}
-
-as.query.bool <- function(x, comb=FALSE, ...){
-  tmp <- setNames(list(lazy_eval(x[[1]]$expr)), names(x))
-  if(comb){
-    list(bool = tmp)
-  } else {
-    list(query = list(filtered = list(filter = list(bool = tmp))))
-  }
-}
-
-as.query.range <- function(x, comb=FALSE, ...){
-  x <- parse_range(get_eq(x[[1]]))
-  if(comb){
-    list(range = x)
-  } else {
-    list(query = list(filtered = list(filter = list(range = x))))
-  }
-}
-
-
-
+# helpers
 gsub_geoshape <- function(type, x){
   switch(type,
          envelope = gsub('\\]\\]\\]', "\\]\\]", gsub('\\[\\[\\[', "\\[\\[", x)),
