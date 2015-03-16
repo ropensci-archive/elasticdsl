@@ -2,21 +2,9 @@
 % Please edit documentation in R/as.query.R
 \name{as.query}
 \alias{as.query}
-\alias{as.query.bool}
-\alias{as.query.ids}
-\alias{as.query.prefix}
-\alias{as.query.range}
 \title{As query functions}
 \usage{
 as.query(x, comb = FALSE, ...)
-
-\method{as.query}{prefix}(x, field, comb = FALSE, ...)
-
-\method{as.query}{ids}(x, comb = FALSE, ...)
-
-\method{as.query}{bool}(x, comb = FALSE, ...)
-
-\method{as.query}{range}(x, comb = FALSE, ...)
 }
 \arguments{
 \item{x}{Input}

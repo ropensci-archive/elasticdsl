@@ -24,7 +24,7 @@
 #'
 #' Alternatively, if nothing follows a query definition, \code{\link{Search}} is called
 #' to execute the search with the query as given. In a sense, this is essentially like
-#' what \code{\link{dplyr}} does.
+#' what \code{dplyr} does.
 #' @examples \dontrun{
 #' # DSL queries default to search across all indices
 #' bool(must_not = list(term=list(speaker="KING HENRY IV")))
