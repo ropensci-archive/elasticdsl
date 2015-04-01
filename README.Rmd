@@ -10,7 +10,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![Build Status](https://api.travis-ci.org/ropensci/elasticdsl.png)](https://travis-ci.org/ropensci/elasticdsl)
+[![Build Status](https://api.travis-ci.org/ropensci/elasticdsl.svg)](https://travis-ci.org/ropensci/elasticdsl)
+[![Build status](https://ci.appveyor.com/api/projects/status/r810moreouuq18ox?svg=true)](https://ci.appveyor.com/project/sckott/elasticdsl)
 
 **An R DSL for [Elasticsearch](http://elasticsearch.org)**
 
@@ -51,7 +52,7 @@ index("shakespeare")
 
 ## Print query as pretty json
 
-```{r}
+```{r eval=FALSE}
 index("shakespeare") %>%
   filter() %>% 
   ids(c(1, 2, 150)) %>%

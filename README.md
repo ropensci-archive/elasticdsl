@@ -3,7 +3,8 @@ elasticdsl
 
 
 
-[![Build Status](https://api.travis-ci.org/ropensci/elasticdsl.png)](https://travis-ci.org/ropensci/elasticdsl)
+[![Build Status](https://api.travis-ci.org/ropensci/elasticdsl.svg)](https://travis-ci.org/ropensci/elasticdsl)
+[![Build status](https://ci.appveyor.com/api/projects/status/r810moreouuq18ox?svg=true)](https://ci.appveyor.com/project/sckott/elasticdsl)
 
 **An R DSL for [Elasticsearch](http://elasticsearch.org)**
 
@@ -41,13 +42,12 @@ elastic::connect(es_port = 9200)
 #> port:      9200 
 #> username:  NULL 
 #> password:  NULL 
-#> api key:   NULL 
 #> elasticsearch details:   
 #>       status:                  200 
-#>       name:                    Luna 
-#>       Elasticsearch version:   1.4.3 
-#>       ES version timestamp:    2015-02-11T14:23:15Z 
-#>       lucene version:          4.10.3
+#>       name:                    Zabu 
+#>       Elasticsearch version:   1.5.0 
+#>       ES version timestamp:    2015-03-23T14:30:58Z 
+#>       lucene version:          4.10.4
 ```
 
 ## Set the index to use
@@ -89,7 +89,6 @@ index("shakespeare") %>%
   filter() %>% 
   ids(c(1, 2, 150)) %>%
   explain()
-#> Error: length(url) == 1 is not TRUE
 ```
 
 ## Execute query
@@ -208,14 +207,14 @@ s %>% fields(play_name, text_entry) %>% exec() %>% .$hits %>% .$hits
 #> [1] 1
 #> 
 #> [[1]]$fields
-#> [[1]]$fields$text_entry
-#> [[1]]$fields$text_entry[[1]]
-#> [1] "Against the irregular and wild Glendower,"
-#> 
-#> 
 #> [[1]]$fields$play_name
 #> [[1]]$fields$play_name[[1]]
 #> [1] "Henry IV"
+#> 
+#> 
+#> [[1]]$fields$text_entry
+#> [[1]]$fields$text_entry[[1]]
+#> [1] "Against the irregular and wild Glendower,"
 #> 
 #> 
 #> 
@@ -237,14 +236,14 @@ s %>% fields(play_name, text_entry) %>% exec() %>% .$hits %>% .$hits
 #> [1] 1
 #> 
 #> [[2]]$fields
-#> [[2]]$fields$text_entry
-#> [[2]]$fields$text_entry[[1]]
-#> [1] "By those Welshwomen done as may not be"
-#> 
-#> 
 #> [[2]]$fields$play_name
 #> [[2]]$fields$play_name[[1]]
 #> [1] "Henry IV"
+#> 
+#> 
+#> [[2]]$fields$text_entry
+#> [[2]]$fields$text_entry[[1]]
+#> [1] "By those Welshwomen done as may not be"
 ```
 
 
