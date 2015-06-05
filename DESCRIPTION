@@ -1,8 +1,8 @@
 Package: elasticdsl
 Title: Elasticsearch DSL
 Description: Elasticsearch DSL.
-Version: 0.0.2.99
-Date: 2015-02-23
+Version: 0.0.3.900
+Date: 2015-06-04
 License: MIT + file LICENSE
 Authors@R: person("Scott", "Chamberlain", role = c("aut", "cre"),
     email = "myrmecocystus@gmail.com")
