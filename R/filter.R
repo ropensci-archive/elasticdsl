@@ -14,10 +14,10 @@
 #' bool(must_not = list(term=list(speaker="KING HENRY IV")))
 #'
 #' # At the end either
-#' ## explain
+#' ## glimpse the query to be sent
 #' index("shakespeare") %>%
 #'  ids(c(1, 2, 150)) %>%
-#'  explain()
+#'  glimpse()
 #' ## or execute
 #' index("shakespeare") %>%
 #'  ids(c(1, 2, 150)) %>%
@@ -81,7 +81,7 @@ NULL
 #' @export
 #' @rdname filters
 filter <- function(x){
-  structure(x, filtered = TRUE)
+  structure(x, class = c(class(x), "filtered"), filtered = TRUE)
 }
 
 #' @export
@@ -176,7 +176,7 @@ ids_ <- function(.obj=list(), ..., .dots){
 
 getindex <- function(x){
   clz <- class(x)
-  switch(clz,
+  switch(clz[1],
          index = attr(x, "index"),
          lazy_dots = x$index,
          comb = attr(x, "index")
@@ -185,7 +185,7 @@ getindex <- function(x){
 
 getfiltered <- function(x){
   clz <- class(x)
-  switch(clz,
+  switch(clz[1],
          index = attr(x, "filtered"),
          comb = attr(x, "filtered")
   )
@@ -193,7 +193,7 @@ getfiltered <- function(x){
 
 popindex <- function(x){
   clz <- class(x)
-  switch(clz,
+  switch(clz[1],
          comb = x[[1]],
          index = NULL
   )
@@ -203,11 +203,18 @@ as.fjson <- function(x, ...) UseMethod("as.fjson")
 
 as.fjson.comb <- function(x, ...){
   oper <- attr(x, "operand")
-  out <- lapply(x, as.query, comb = TRUE)
-  if(length(out) == 1) out <- out[[1]]
 
-  if(!is.null(attr(x, "filtered")) && attr(x, "filtered")){
-    if(is.null(oper)){
+  # get parameters to pass to query
+  params <- Filter(function(z) is(z, "params"), x)
+  params2 <- lapply(params, as.query, comb = TRUE)
+
+  # remove parameter inputs
+  x <- Filter(function(z) !is(z, "params"), x)
+  out <- lapply(x, as.query, comb = TRUE)
+  if (length(out) == 1) out <- out[[1]]
+
+  if (!is.null(attr(x, "filtered")) && attr(x, "filtered")) {
+    if (is.null(oper)) {
       quer <- list(query = list(filtered = list(filter = out)))
     } else {
       quer <- list(query = list(filtered = list(filter = setNames(list(out), oper))))
@@ -216,15 +223,19 @@ as.fjson.comb <- function(x, ...){
     quer <- list(query = out)
   }
 
-  if(!is.null(attr(x, "fields"))){
+  if (!is.null(attr(x, "fields"))) {
     quer$fields <- as.character(sapply(attr(x, "fields"), "[[", "expr"))
   }
 
-  if(!is.null(attr(x, "size"))){
+  if (!is.null(attr(x, "size"))) {
     quer$size <- attr(x, "size")
   }
 
-  jsonlite::toJSON(quer, ..., auto_unbox = TRUE)
+  if (length(quer$query) == 0) {
+    quer <- list()
+  }
+
+  list(params = params2, body = jsonlite::toJSON(quer, ..., auto_unbox = TRUE))
 }
 
 as.fjson.range <- function(x, ...){
@@ -240,8 +251,8 @@ as.fjson.bool <- function(x, ...){
 
 as.fjson.geoshape <- function(x, field, ...){
   out <- list()
-  for(i in seq_along(x)){
-    dat <- if(is.character(x[[i]]$expr)){
+  for (i in seq_along(x)) {
+    dat <- if (is.character(x[[i]]$expr)) {
       unbox(x[[i]]$expr)
     } else {
       list(eval(x[[i]]$expr))
@@ -264,7 +275,7 @@ as.fjson.common <- function(x, field, ...){
 
 as.fjson.missing <- function(x, field, ...){
   tmp <- setNames(list(list(query = as.character(x$query$expr),
-                            existence=existence, null_value=null_value),
+                            existence = existence, null_value = null_value),
                   as.character(x$field$expr)))
   alldat <- list(query = list(common = tmp))
   jsonlite::toJSON(alldat, ..., auto_unbox = TRUE)
@@ -281,6 +292,13 @@ as.fjson.ids <- function(x, ...){
   alldat <- list(query = list(filtered = list(filter = list(ids = tmp))))
   jsonlite::toJSON(alldat, ..., auto_unbox = TRUE)
 }
+
+# as.fjson.sort <- function(x, ...){
+#   tmp <-
+#     x[[1]]$expr
+#   alldat <- list(query = list(filtered = list(filter = list(sort = tmp))))
+#   jsonlite::toJSON(alldat, ..., auto_unbox = TRUE)
+# }
 
 # helpers
 gsub_geoshape <- function(type, x){

@@ -41,9 +41,24 @@ as.query.bool <- function(x, comb=FALSE, ...){
 #' @export
 as.query.range <- function(x, comb=FALSE, ...){
   x <- parse_range(get_eq(x[[1]]))
-  if(comb){
+  if (comb) {
     list(range = x)
   } else {
     list(query = list(filtered = list(filter = list(range = x))))
   }
+}
+
+#' @export
+as.query.params <- function(x, comb=FALSE, ...){
+  if (length(x) == 1) {
+    paramfun(x)
+  } else {
+    sapply(x, paramfun, USE.NAMES = FALSE)
+  }
+}
+
+paramfun <- function(z) {
+  tried <- tryCatch(deparse(z$expr), error = function(e) e)
+  if (is(tried, "simpleError")) tried <- z[[1]]
+  setNames(list(tried), attr(z, "param"))
 }

@@ -88,7 +88,7 @@ index("shakespeare")
 index("shakespeare") %>%
   filter() %>% 
   ids(c(1, 2, 150)) %>%
-  explain()
+  glimpse()
 ```
 
 ## Execute query
@@ -140,7 +140,7 @@ s <- index("shakespeare") %>%
 
 
 ```r
-s %>% fields(play_name) %>% exec() %>% .$hits %>% .$hits
+s %>% fields(play_name) %>% exec() %>% hits
 #> [[1]]
 #> [[1]]$`_index`
 #> [1] "shakespeare"

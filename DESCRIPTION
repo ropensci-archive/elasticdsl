@@ -13,7 +13,8 @@ Imports:
     elastic,
     jsonlite,
     magrittr,
-    lazyeval
+    lazyeval,
+    dplyr
 Suggests:
     roxygen2,
     knitr
