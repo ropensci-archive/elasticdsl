@@ -8,6 +8,10 @@ tabl(x, source_only = TRUE, n = 10)
 }
 \arguments{
 \item{x}{Input}
+
+\item{source_only}{(logical) Return source only?}
+
+\item{n}{(integer) Count to print.}
 }
 \description{
 Attempt to coerce output to a single data.frame

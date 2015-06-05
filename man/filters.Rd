@@ -2,18 +2,18 @@
 % Please edit documentation in R/filter.R
 \name{filters}
 \alias{and}
-\alias{bool}
-\alias{bool_}
+\alias{fbool}
+\alias{fbool_}
 \alias{filter}
 \alias{filters}
+\alias{frange}
+\alias{frange_}
 \alias{ids}
 \alias{ids_}
 \alias{not}
 \alias{or}
 \alias{prefix}
 \alias{prefix_}
-\alias{range}
-\alias{range_}
 \title{elastic DSL filters}
 \usage{
 filter(x)
@@ -24,14 +24,14 @@ and(x)
 
 not(x)
 
-range(.obj = list(), ..., boost = 1, time_zone = NULL, execution = NULL,
-  cache = FALSE)
+frange(.obj = list(), ..., boost = 1, time_zone = NULL,
+  execution = NULL, cache = FALSE)
 
-range_(.obj = list(), ..., .dots)
+frange_(.obj = list(), ..., .dots)
 
-bool(.obj = list(), ...)
+fbool(.obj = list(), ...)
 
-bool_(.obj = list(), ..., .dots)
+fbool_(.obj = list(), ..., .dots)
 
 prefix(.obj = list(), ...)
 
@@ -49,12 +49,28 @@ doing e.g., \code{localhost:9200/_search}}
 
 \item{...}{Further args passed on}
 
-\item{index}{Index name}
+\item{boost}{(numeric) Sets the boost value of the query. Default: 1.0}
 
-\item{type}{Type name, Default: NULL, so all types}
+\item{time_zone}{(character) The time zone}
+
+\item{execution}{(character) See details.}
+
+\item{cache}{(logical) To cache or not.}
+
+\item{.dots}{Further args}
 }
 \description{
 elastic DSL filters
+}
+\details{
+The execution option controls how the range filter internally executes. The execution
+option accepts the following values:
+\itemize{
+ \item index Uses the field's inverted index in order to determine whether documents
+ fallwithin the specified range.
+ \item fielddata Uses fielddata in order to determine whether documents fall within
+ the specified range.
+}
 }
 \examples{
 \dontrun{

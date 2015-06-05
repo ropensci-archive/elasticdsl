@@ -3,6 +3,8 @@
 #' @importFrom dplyr rbind_all as_data_frame
 #' @export
 #' @param x Input
+#' @param source_only (logical) Return source only?
+#' @param n (integer) Count to print.
 #' @details Note that this may not always succeed, as we can't predict what
 #' various ways your data in formatted in your Elasticsearch instance.
 #' @examples \dontrun{

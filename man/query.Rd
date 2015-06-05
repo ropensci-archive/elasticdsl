@@ -43,11 +43,27 @@ doing e.g., \code{localhost:9200/_search}}
 
 \item{...}{Further args passed on}
 
-\item{index}{Index name}
+\item{boost}{Explanation...}
 
-\item{type}{Type name, Default: NULL, so all types}
+\item{time_zone}{Explanation...}
 
-\item{x}{Input to various functions}
+\item{execution}{Explanation...}
+
+\item{cache}{Explanation...}
+
+\item{.dots}{Explanation...}
+
+\item{field}{Explanation...}
+
+\item{negative_boost}{Explanation...}
+
+\item{query}{Explanation...}
+
+\item{cutoff_frequency}{Explanation...}
+
+\item{low_freq_operator}{Explanation...}
+
+\item{minimum_should_match}{Explanation...}
 }
 \description{
 The elastic DSL

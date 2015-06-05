@@ -28,7 +28,17 @@ sort_(.obj = list(), ..., .dots)
 \arguments{
 \item{x}{Input}
 
+\item{pretty}{Pretty print}
+
 \item{...}{Further args passed on to \code{\link[jsonlite]{toJSON}}}
+
+\item{.obj}{Input}
+
+\item{query}{Query statement}
+
+\item{y}{Input}
+
+\item{.dots}{Input}
 }
 \description{
 elastic DSL utilities

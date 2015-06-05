@@ -2,6 +2,8 @@
 #'
 #' @export
 #' @param .obj things stuff
+#' @param body Body stuff in a list
+#' @param params Parameters in a list
 #' @param ... Further args passed on to \code{\link[elastic]{Search}}
 #' @rdname Search
 Search_ <- function(.obj = "", body = list(), params = list(), ...){

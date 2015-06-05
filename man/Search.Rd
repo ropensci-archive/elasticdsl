@@ -9,6 +9,10 @@ Search_(.obj = "", body = list(), params = list(), ...)
 \arguments{
 \item{.obj}{things stuff}
 
+\item{body}{Body stuff in a list}
+
+\item{params}{Parameters in a list}
+
 \item{...}{Further args passed on to \code{\link[elastic]{Search}}}
 }
 \description{

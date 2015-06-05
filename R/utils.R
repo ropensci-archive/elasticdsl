@@ -2,6 +2,11 @@
 #'
 #' @name utils
 #' @param x Input
+#' @param pretty Pretty print
+#' @param .obj Input
+#' @param query Query statement
+#' @param y  Input
+#' @param .dots Input
 #' @param ... Further args passed on to \code{\link[jsonlite]{toJSON}}
 #' @details Various utilities.
 #' \itemize{

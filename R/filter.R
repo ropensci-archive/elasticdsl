@@ -2,12 +2,24 @@
 #'
 #' @name filters
 #'
-#' @param index Index name
-#' @param type Type name, Default: NULL, so all types
 #' @param .obj An index object. If nothing passed defaults to all indices, equivalent to
 #' doing e.g., \code{localhost:9200/_search}
 #' @param x Input to various functions
+#' @param boost (numeric) Sets the boost value of the query. Default: 1.0
+#' @param time_zone (character) The time zone
+#' @param execution (character) See details.
+#' @param cache (logical) To cache or not.
+#' @param .dots Further args
 #' @param ... Further args passed on
+#' @details
+#' The execution option controls how the range filter internally executes. The execution
+#' option accepts the following values:
+#' \itemize{
+#'  \item index Uses the field's inverted index in order to determine whether documents
+#'  fallwithin the specified range.
+#'  \item fielddata Uses fielddata in order to determine whether documents fall within
+#'  the specified range.
+#' }
 #'
 #' @examples \dontrun{
 #' # DSL filters default to search across all indices
@@ -104,37 +116,32 @@ not <- function(x){
 
 #' @export
 #' @rdname filters
-range <- function(.obj=list(), ..., boost=1, time_zone=NULL, execution=NULL, cache=FALSE) {
-  range_(.obj, .dots = lazyeval::lazy_dots(...))
+frange <- function(.obj=list(), ..., boost=1, time_zone=NULL, execution=NULL, cache=FALSE) {
+  frange_(.obj, .dots = lazyeval::lazy_dots(...))
 }
 
 #' @export
 #' @rdname filters
-range_ <- function(.obj=list(), ..., .dots) {
+frange_ <- function(.obj=list(), ..., .dots) {
   dots <- lazyeval::all_dots(.dots, ...)
   structure(ec(list(popindex(.obj), structure(dots, class=c("range","lazy_dots")))),
             class="comb", index=getindex(.obj), filtered=getfiltered(.obj),
             operand=attr(.obj, "operand"))
-#   query <- as.fjson(structure(dots, class=c("range","lazy_dots")))
-#   execute(.obj, query)
 }
 
 #' @export
 #' @rdname filters
-bool <- function(.obj=list(), ...){
-  bool_(.obj, .dots = lazyeval::lazy_dots(...))
+fbool <- function(.obj=list(), ...){
+  fbool_(.obj, .dots = lazyeval::lazy_dots(...))
 }
 
 #' @export
 #' @rdname filters
-bool_ <- function(.obj=list(), ..., .dots){
+fbool_ <- function(.obj=list(), ..., .dots){
   dots <- lazyeval::all_dots(.dots, ...)
   structure(ec(list(popindex(.obj), structure(dots, class=c("bool","lazy_dots")))),
             class="comb", index=getindex(.obj), filtered=getfiltered(.obj),
             operand=attr(.obj, "operand"))
-#   dots <- lazyeval::all_dots(.dots, ...)
-#   query <- as.fjson(structure(dots, class=c("bool","lazy_dots")))
-#   execute(.obj, query)
 }
 
 #' @export
