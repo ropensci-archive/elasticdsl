@@ -334,8 +334,3 @@ parse_range <- function(x){
 combine <- function(.obj, ..., .dots){
   list(.obj, lazyeval::all_dots(.dots, ...))
 }
-
-# execute on Search
-execute <- function(.obj, query){
-  Search_(.obj, body=query)
-}

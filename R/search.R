@@ -16,5 +16,5 @@ Search_ <- function(.obj = "", body = list(), params = list(), ...){
     body <- list()
   }
   # Search(index = obj, body = body, ...)
-  do.call("Search", c(index = obj, body = body, unlist(params, recursive = FALSE)))
+  do.call("Search", as.list(c(index = obj, body = body, unlist(params, recursive = FALSE))))
 }

@@ -38,16 +38,16 @@ The function `elastic::connect()` is used before doing anything else to set the 
 
 ```r
 elastic::connect(es_port = 9200)
-#> uri:       http://127.0.0.1 
+#> url:       http://127.0.0.1 
 #> port:      9200 
 #> username:  NULL 
 #> password:  NULL 
 #> elasticsearch details:   
-#>       status:                  200 
-#>       name:                    Zabu 
-#>       Elasticsearch version:   1.5.0 
-#>       ES version timestamp:    2015-03-23T14:30:58Z 
-#>       lucene version:          4.10.4
+#>    status:                  200 
+#>    name:                    Gloom 
+#>    Elasticsearch version:   1.7.2 
+#>    ES version timestamp:    2015-09-14T09:49:53Z 
+#>    lucene version:          4.10.4
 ```
 
 ## Set the index to use
@@ -65,20 +65,7 @@ index("shakespeare")
 #>       speaker: string 
 #>       speech_number: long 
 #>       text_entry: string 
-#>     scene: 
-#>       line_id: long 
-#>       line_number: string 
-#>       play_name: string 
-#>       speaker: string 
-#>       speech_number: long 
-#>       text_entry: string 
-#>     act: 
-#>       line_id: long 
-#>       line_number: string 
-#>       play_name: string 
-#>       speaker: string 
-#>       speech_number: long 
-#>       text_entry: string
+...
 ```
 
 ## Print query as pretty json
@@ -88,19 +75,17 @@ index("shakespeare")
 index("shakespeare") %>%
   filter() %>% 
   ids(c(1, 2, 150)) %>%
-  glimpse()
+  explain() # doesn't exist yet
 ```
 
 ## Execute query
 
 
 ```r
-index("shakespeare") %>%
+res <- index("shakespeare") %>%
   filter() %>% 
   ids(c(1, 2)) %>%
-  exec() %>% 
-  n()
-#> [1] 2
+  exec()
 ```
 
 ## n() to get number of results
@@ -140,7 +125,7 @@ s <- index("shakespeare") %>%
 
 
 ```r
-s %>% fields(play_name) %>% exec() %>% hits
+s %>% fields(play_name) %>% exec() %>% .$hits %>% .$hits
 #> [[1]]
 #> [[1]]$`_index`
 #> [1] "shakespeare"
@@ -151,40 +136,7 @@ s %>% fields(play_name) %>% exec() %>% hits
 #> [[1]]$`_id`
 #> [1] "42"
 #> 
-#> [[1]]$`_version`
-#> [1] 1
-#> 
-#> [[1]]$`_score`
-#> [1] 1
-#> 
-#> [[1]]$fields
-#> [[1]]$fields$play_name
-#> [[1]]$fields$play_name[[1]]
-#> [1] "Henry IV"
-#> 
-#> 
-#> 
-#> 
-#> [[2]]
-#> [[2]]$`_index`
-#> [1] "shakespeare"
-#> 
-#> [[2]]$`_type`
-#> [1] "line"
-#> 
-#> [[2]]$`_id`
-#> [1] "47"
-#> 
-#> [[2]]$`_version`
-#> [1] 1
-#> 
-#> [[2]]$`_score`
-#> [1] 1
-#> 
-#> [[2]]$fields
-#> [[2]]$fields$play_name
-#> [[2]]$fields$play_name[[1]]
-#> [1] "Henry IV"
+...
 ```
 
 
@@ -200,50 +152,7 @@ s %>% fields(play_name, text_entry) %>% exec() %>% .$hits %>% .$hits
 #> [[1]]$`_id`
 #> [1] "42"
 #> 
-#> [[1]]$`_version`
-#> [1] 1
-#> 
-#> [[1]]$`_score`
-#> [1] 1
-#> 
-#> [[1]]$fields
-#> [[1]]$fields$play_name
-#> [[1]]$fields$play_name[[1]]
-#> [1] "Henry IV"
-#> 
-#> 
-#> [[1]]$fields$text_entry
-#> [[1]]$fields$text_entry[[1]]
-#> [1] "Against the irregular and wild Glendower,"
-#> 
-#> 
-#> 
-#> 
-#> [[2]]
-#> [[2]]$`_index`
-#> [1] "shakespeare"
-#> 
-#> [[2]]$`_type`
-#> [1] "line"
-#> 
-#> [[2]]$`_id`
-#> [1] "47"
-#> 
-#> [[2]]$`_version`
-#> [1] 1
-#> 
-#> [[2]]$`_score`
-#> [1] 1
-#> 
-#> [[2]]$fields
-#> [[2]]$fields$play_name
-#> [[2]]$fields$play_name[[1]]
-#> [1] "Henry IV"
-#> 
-#> 
-#> [[2]]$fields$text_entry
-#> [[2]]$fields$text_entry[[1]]
-#> [1] "By those Welshwomen done as may not be"
+...
 ```
 
 
@@ -259,60 +168,7 @@ s %>% fields(play_name, text_entry, line_id) %>% exec() %>% .$hits %>% .$hits
 #> [[1]]$`_id`
 #> [1] "42"
 #> 
-#> [[1]]$`_version`
-#> [1] 1
-#> 
-#> [[1]]$`_score`
-#> [1] 1
-#> 
-#> [[1]]$fields
-#> [[1]]$fields$line_id
-#> [[1]]$fields$line_id[[1]]
-#> [1] 43
-#> 
-#> 
-#> [[1]]$fields$play_name
-#> [[1]]$fields$play_name[[1]]
-#> [1] "Henry IV"
-#> 
-#> 
-#> [[1]]$fields$text_entry
-#> [[1]]$fields$text_entry[[1]]
-#> [1] "Against the irregular and wild Glendower,"
-#> 
-#> 
-#> 
-#> 
-#> [[2]]
-#> [[2]]$`_index`
-#> [1] "shakespeare"
-#> 
-#> [[2]]$`_type`
-#> [1] "line"
-#> 
-#> [[2]]$`_id`
-#> [1] "47"
-#> 
-#> [[2]]$`_version`
-#> [1] 1
-#> 
-#> [[2]]$`_score`
-#> [1] 1
-#> 
-#> [[2]]$fields
-#> [[2]]$fields$line_id
-#> [[2]]$fields$line_id[[1]]
-#> [1] 48
-#> 
-#> 
-#> [[2]]$fields$play_name
-#> [[2]]$fields$play_name[[1]]
-#> [1] "Henry IV"
-#> 
-#> 
-#> [[2]]$fields$text_entry
-#> [[2]]$fields$text_entry[[1]]
-#> [1] "By those Welshwomen done as may not be"
+...
 ```
 
 ## Filters vs. queries

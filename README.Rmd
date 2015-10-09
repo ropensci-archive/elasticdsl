@@ -2,6 +2,31 @@ elasticdsl
 =======
 
 ```{r echo=FALSE}
+library("knitr")
+hook_output <- knitr::knit_hooks$get("output")
+knitr::knit_hooks$set(output = function(x, options) {
+   lines <- options$output.lines
+   if (is.null(lines)) {
+     return(hook_output(x, options))  # pass to default hook
+   }
+   x <- unlist(strsplit(x, "\n"))
+   more <- "..."
+   if (length(lines)==1) {        # first n lines
+     if (length(x) > lines) {
+       # truncate the output, but add ....
+       x <- c(head(x, lines), more)
+     }
+   } else {
+     x <- c(if (abs(lines[1])>1) more else NULL,
+            x[lines],
+            if (length(x)>lines[abs(length(lines))]) more else NULL
+           )
+   }
+   # paste these lines together
+   x <- paste(c(x, ""), collapse = "\n")
+   hook_output(x, options)
+ })
+
 knitr::opts_chunk$set(
   comment = "#>",
   collapse = TRUE,
@@ -46,7 +71,7 @@ elastic::connect(es_port = 9200)
 
 ## Set the index to use
 
-```{r}
+```{r output.lines = 1:10}
 index("shakespeare")
 ```
 
@@ -56,17 +81,16 @@ index("shakespeare")
 index("shakespeare") %>%
   filter() %>% 
   ids(c(1, 2, 150)) %>%
-  explain()
+  explain() # doesn't exist yet
 ```
 
 ## Execute query
 
 ```{r}
-index("shakespeare") %>%
+res <- index("shakespeare") %>%
   filter() %>% 
   ids(c(1, 2)) %>%
-  exec() %>% 
-  n()
+  exec()
 ```
 
 ## n() to get number of results
@@ -99,15 +123,15 @@ s <- index("shakespeare") %>%
   size(2)
 ```
 
-```{r}
+```{r output.lines = 1:10}
 s %>% fields(play_name) %>% exec() %>% .$hits %>% .$hits
 ```
 
-```{r}
+```{r output.lines = 1:10}
 s %>% fields(play_name, text_entry) %>% exec() %>% .$hits %>% .$hits
 ```
 
-```{r}
+```{r output.lines = 1:10}
 s %>% fields(play_name, text_entry, line_id) %>% exec() %>% .$hits %>% .$hits
 ```
 
