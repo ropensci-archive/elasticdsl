@@ -44,13 +44,6 @@ glimpse <- function(x, pretty = TRUE, ...){
 
 #' @export
 #' @rdname utils
-exec <- function(.obj, query, ...) {
-  tmp <- as.fjson(.obj)
-  Search_(attr(.obj, "index"), body = tmp$body, params = tmp$params, ...)
-}
-
-#' @export
-#' @rdname utils
 fields <- function(x, ...){
   structure(x, fields = lazyeval::lazy_dots(...))
 }
@@ -58,7 +51,9 @@ fields <- function(x, ...){
 #' @export
 #' @rdname utils
 size <- function(x, y) {
-  structure(x, size = y)
+  #pipe_autoexec(toggle = TRUE)
+  # structure(x, size = y)
+  c(x, size = y)
 }
 
 #' @export
@@ -99,9 +94,4 @@ desc <- function(x) {
 # combine query statements
 combine <- function(.obj, ..., .dots){
   list(.obj, lazyeval::all_dots(.dots, ...))
-}
-
-# execute on Search
-execute <- function(.obj, query){
-  Search_(.obj, body = query)
 }

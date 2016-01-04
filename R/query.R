@@ -106,9 +106,10 @@ geoshape <- function(.obj=list(), ..., field=NULL){
 #' @export
 #' @rdname query
 geoshape_ <- function(.obj=list(), ..., .dots, field=NULL){
+  pipe_autoexec(toggle = FALSE)
   dots <- lazyeval::all_dots(.dots, ...)
-  query <- as.json(structure(dots, class=c("geoshape","lazy_dots")), field=field)
-  execute(.obj, query)
+  query <- as.json(structure(dots, class = c("geoshape", "lazy_dots")), field = field)
+  structure(.obj, class = "query", query = query)
 }
 
 #' @export
