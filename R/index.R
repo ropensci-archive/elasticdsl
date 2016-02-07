@@ -22,9 +22,9 @@ index <- function(index, type=NULL, what="mappings", ...){
 #' @export
 #'
 #' @examples \dontrun{
-#'   list_indices()
+#'   indices()
 #' }
-list_indices <- function() {
+indices <- function() {
   names(index_settings())
 }
 
