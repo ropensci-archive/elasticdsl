@@ -14,6 +14,7 @@ NULL
 #'
 #'
 #' @examples
+#' library(elastic)
 #' target <- Search(
 #' index = "gbif",
 #' body = list(aggs = list(statistic = list(avg = list(field = "decimalLatitude")))))
