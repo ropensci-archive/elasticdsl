@@ -17,4 +17,5 @@ Imports:
     dplyr
 Suggests:
     roxygen2,
-    knitr
+    knitr,
+    testthat
