@@ -7,3 +7,5 @@ appveyor.yml
 ^Makefile$
 man-roxygen
 ^CONDUCT\.md$
+\.deb$
+
