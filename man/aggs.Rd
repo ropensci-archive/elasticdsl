@@ -17,16 +17,4 @@ elastic DSL aggs
 
 Aggregations
 }
-\examples{
-library(elastic)
-target <- Search(
-index = "gbif",
-body = list(aggs = list(statistic = list(avg = list(field = "decimalLatitude")))))
-
-aggs_example <- index("gbif") \%>\%
-  aggs(x = list(statistic = list(avg = list(field = "decimalLatitude"))))
-
-identical(target$aggregations, aggs_example$aggregations)
-
-}
 
