@@ -1,34 +1,5 @@
 # from @smbache Stefan Milton Bache
 
-#' Toggle Auto Execution On or Off for Pipelines
-#'
-#' A call to \code{pipe_autoexec} allows a function to toggle auto execution of
-#' \code{http} on or off at the end of a pipeline.
-#'
-#' @param toggle logical: \code{TRUE} toggles auto execution on, \code{FALSE}
-#'   toggles auto execution off.
-#'
-#' @details Once auto execution is turned on the \code{result} identifier inside
-#' the pipeline is bound to an "Active Binding". This will not be changed on
-#' toggling auto execution off, but rather the function to be executed is
-#' changed to \code{identity}.
-#'
-#' @noRd
-pipe_autoexec <- function(toggle, method = "GET") {
-  if (!identical(toggle, TRUE) && !identical(toggle, FALSE)) {
-    stop("Argument 'toggle' must be logical.")
-  }
-
-  info <- pipeline_info()
-
-  if (isTRUE(info[["is_piped"]])) {
-    pipeline_on_exit(info$env)
-    info$env$.exec_exitfun <- if (toggle) exec else identity
-  }
-
-  invisible()
-}
-
 #' Information on Potential Pipeline
 #'
 #' This function figures out whether it is called from within a pipeline.
@@ -51,7 +22,37 @@ pipeline_info <- function() {
   is_piped <- any(is_magrittr_env)
 
   list(is_piped = is_piped,
-       env      = if (is_piped) sys.frames()[[min(which(is_magrittr_env))]])
+       env      = if (is_piped) sys.frames()[[max(which(is_magrittr_env))]])
+}
+
+#' Toggle Auto Execution On or Off for Pipelines
+#'
+#' A call to \code{pipe_autoexec} allows a function to toggle auto execution of
+#' \code{jq} on or off at the end of a pipeline.
+#'
+#' @param toggle logical: \code{TRUE} toggles auto execution on, \code{FALSE}
+#'   toggles auto execution off.
+#'
+#' @details Once auto execution is turned on the \code{result} identifier inside
+#' the pipeline is bound to an "Active Binding". This will not be changed on
+#' toggling auto execution off, but rather the function to be executed is
+#' changed to \code{identity}.
+#'
+#' @noRd
+pipe_autoexec <- function(toggle) {
+  if (!identical(toggle, TRUE) && !identical(toggle, FALSE)) {
+    stop("Argument 'toggle' must be logical.")
+  }
+
+  info <- pipeline_info()
+
+  if (isTRUE(info[["is_piped"]])) {
+    es_exit <- function(j) if (inherits(j, "esdsl")) exec2(j) else j
+    pipeline_on_exit(info$env)
+    info$env$.es_exitfun <- if (toggle) es_exit else identity
+  }
+
+  invisible()
 }
 
 #' Setup On-Exit Action for a Pipeline
@@ -59,7 +60,7 @@ pipeline_info <- function() {
 #' A call to \code{pipeline_on_exit} will setup the pipeline for auto execution by
 #' making \code{result} inside \code{\%>\%} an active binding. The initial
 #' call will register the \code{identity} function as the exit action,
-#' but this can be changed to \code{jq} with a call to \code{pipe_autoexec}.
+#' but this can be changed to \code{exec} with a call to \code{pipe_autoexec}.
 #' Subsequent calls to \code{pipeline_on_exit} has no effect.
 #'
 #' @param env A reference to the \code{\%>\%} environment, in which
@@ -68,21 +69,20 @@ pipeline_info <- function() {
 #' @noRd
 pipeline_on_exit <- function(env) {
   # Only activate the first time; after this the binding is already active.
-  if (exists(".exec_exitfun", envir = env, inherits = FALSE, mode = "function")) {
+  if (exists(".es_exitfun", envir = env, inherits = FALSE, mode = "function")) {
     return(invisible())
   }
-  env$.exec_exitfun <- identity
+  env$.es_exitfun <- identity
 
   res <- NULL
 
-  exec_result <- function(v) {
+  es_result <- function(v) {
     if (missing(v)) {
       res
-    }
-    else {
-      res <<- `$<-`(v, value, env$.exec_exitfun(v$value))
+    } else {
+      res <<- `$<-`(v, value, env$.es_exitfun(v$value))
     }
   }
 
-  makeActiveBinding("result", exec_result, env)
+  makeActiveBinding("result", es_result, env)
 }
