@@ -13,6 +13,8 @@ describe(.data)
 Explain a query
 }
 \examples{
+elastic::connect()
+
 index("shakespeare") \%>\% range( speech_number <= 5 ) \%>\% describe
 
 index("shakespeare") \%>\%

@@ -3,6 +3,8 @@
 #' @export
 #' @param .data (list) input, using higher level interface
 #' @examples
+#' elastic::connect()
+#'
 #' index("shakespeare") %>% range( speech_number <= 5 ) %>% describe
 #'
 #' index("shakespeare") %>%
