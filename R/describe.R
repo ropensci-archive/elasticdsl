@@ -1,0 +1,45 @@
+#' Explain a query
+#'
+#' @export
+#' @param .data (list) input, using higher level interface
+#' @examples
+#' index("shakespeare") %>% range( speech_number <= 5 ) %>% describe
+#'
+#' index("shakespeare") %>%
+#'    bool(must_not = list(term=list(speaker="KING HENRY IV"))) %>%
+#'    describe
+#'
+#' index("geoshape") %>%
+#'    geoshape(field = "location", type = "envelope",
+#'             coordinates = list(c(-30, 50), c(30, 0))) %>%
+#'    describe()
+describe <- function(.data) {
+  pipe_autoexec(toggle = FALSE)
+  if (!inherits(.data, "esdsl")) stop("must be of class esdsl", call. = FALSE)
+  structure(make_query(.data), class = "elasticdsl_query")
+}
+
+#' @export
+print.elasticdsl_query <- function(x, ...) {
+  cat("<elasticdsl query>", sep = "\n")
+  cat(paste0("  base: ", x$url), sep = "\n")
+  cat(paste0("  index: ", x$index), sep = "\n")
+  cat(paste0("  query: \n", x$query), sep = "\n")
+}
+
+make_query <- function(x) {
+  list(
+    url = es_make_url(elastic::connection()),
+    index = attr(x$index, "index"),
+    query = jsonlite::prettify(x$query)
+  )
+}
+
+es_make_url <- function(x) {
+  if (is.null(x$port) || nchar(x$port) == 0) {
+    x$base
+  }
+  else {
+    paste(x$base, ":", x$port, sep = "")
+  }
+}
