@@ -34,7 +34,10 @@ NULL
 
 #' @export
 #' @rdname utils
-n <- function(x) x$hits$total
+n <- function(.data) {
+  pipe_autoexec(toggle = FALSE)
+  exec2(structure(.data, class = "esdsl"))$hits$total
+}
 
 #' @export
 #' @rdname utils

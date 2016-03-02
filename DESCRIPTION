@@ -19,3 +19,4 @@ Suggests:
     roxygen2,
     knitr,
     testthat
+RoxygenNote: 5.0.1

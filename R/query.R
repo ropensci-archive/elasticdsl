@@ -46,8 +46,9 @@
 #'
 #' # range query
 #' index("shakespeare") %>% range( speech_number <= 5 )
-#' index("shakespeare") %>% range( speech_number <= c(1,5) ) # doens't work
-#' index("shakespeare") %>% range( speech_number >= c(1,5) ) # doens't work
+#' index("shakespeare") %>% range( speech_number >= 5 )
+#' # index("shakespeare") %>% range( speech_number <= c(1,5) ) # doens't work
+#' # index("shakespeare") %>% range( speech_number >= c(1,5) ) # doens't work
 #'
 #' # geographic query
 #' ## point
@@ -65,7 +66,11 @@
 #' # polygon
 #' coords <- list(c(80.0, -20.0), c(-80.0, -20.0), c(-80.0, 60.0), c(40.0, 60.0), c(80.0, -20.0))
 #' index("geoshape") %>%
-#'    geoshape(field = "location", type = "polygon", coordinates = coords)
+#'    geoshape(field = "location", type = "polygon", coordinates = coords) %>%
+#'    n()
+#'
+#' # common query - not working yet
+#' # index("shakespeare") %>% common( speech_number <= 5 )
 #' }
 NULL
 
@@ -78,9 +83,11 @@ range <- function(.obj=list(), ..., boost=1, time_zone=NULL, execution=NULL, cac
 #' @export
 #' @rdname query
 range_ <- function(.obj=list(), ..., .dots) {
+  pipe_autoexec(toggle = TRUE)
   dots <- lazyeval::all_dots(.dots, ...)
-  query <- as.json(structure(dots, class=c("range","lazy_dots")))
-  execute(.obj, query)
+  query <- as.json(structure(dots, class = c("range", "lazy_dots")))
+  structure(list(index = .obj, query = query), class = "esdsl")
+  #execute(.obj, query)
 }
 
 #' @export
@@ -92,61 +99,64 @@ bool <- function(.obj=list(), ...){
 #' @export
 #' @rdname query
 bool_ <- function(.obj=list(), ..., .dots){
+  pipe_autoexec(toggle = TRUE)
   dots <- lazyeval::all_dots(.dots, ...)
-  query <- as.json(structure(dots, class=c("bool","lazy_dots")))
-  execute(.obj, query)
+  query <- as.json(structure(dots, class = c("bool","lazy_dots")))
+  structure(list(index = .obj, query = query), class = "esdsl")
+  #execute(.obj, query)
 }
 
 #' @export
 #' @rdname query
 geoshape <- function(.obj=list(), ..., field=NULL){
-  geoshape_(.obj, .dots = lazyeval::lazy_dots(...), field=field)
+  geoshape_(.obj, .dots = lazyeval::lazy_dots(...), field = field)
 }
 
 #' @export
 #' @rdname query
 geoshape_ <- function(.obj=list(), ..., .dots, field=NULL){
-  pipe_autoexec(toggle = FALSE)
+  pipe_autoexec(toggle = TRUE)
   dots <- lazyeval::all_dots(.dots, ...)
   query <- as.json(structure(dots, class = c("geoshape", "lazy_dots")), field = field)
-  structure(.obj, class = "query", query = query)
+  structure(list(index = .obj, query = query), class = "esdsl")
 }
 
 #' @export
 #' @rdname query
 boosting <- function(.obj=list(), ..., negative_boost=NULL){
-  boosting_(.obj, .dots = lazyeval::lazy_dots(...), negative_boost=negative_boost)
+  boosting_(.obj, .dots = lazyeval::lazy_dots(...), negative_boost = negative_boost)
 }
 
 #' @export
 #' @rdname query
 boosting_ <- function(.obj=list(), ..., .dots, negative_boost=NULL){
   dots <- lazyeval::all_dots(.dots, ...)
-  query <- as.json(structure(dots, class=c("boosting","lazy_dots")), negative_boost=negative_boost)
-  execute(.obj, query)
+  query <- as.json(structure(dots, class = c("boosting", "lazy_dots")), negative_boost = negative_boost)
+  structure(list(index = .obj, query = query), class = "esdsl")
+  #execute(.obj, query)
 }
 
 #' @export
 #' @rdname query
 common <- function(.obj=list(), field, query=NULL, cutoff_frequency=NULL, low_freq_operator=NULL,
                    minimum_should_match=NULL){
-  common_(.obj, field=field, query=query,
-          cutoff_frequency=cutoff_frequency,
-          low_freq_operator=low_freq_operator,
-          minimum_should_match=minimum_should_match)
+  common_(.obj, field = field, query = query,
+          cutoff_frequency = cutoff_frequency,
+          low_freq_operator = low_freq_operator,
+          minimum_should_match = minimum_should_match)
 }
 
 #' @export
 #' @rdname query
 common_ <- function(.obj=list(), field, query=NULL, cutoff_frequency=NULL, low_freq_operator=NULL,
                     minimum_should_match=NULL){
-  args <- ec(list(field=field, query=query,
-          cutoff_frequency=cutoff_frequency,
-          low_freq_operator=low_freq_operator,
-          minimum_should_match=minimum_should_match))
+  args <- ec(list(field = field, query = query,
+          cutoff_frequency = cutoff_frequency,
+          low_freq_operator = low_freq_operator,
+          minimum_should_match = minimum_should_match))
   dots <- lazyeval::as.lazy_dots(args)
   query <- as.json(
-    structure(dots, class=c("common","lazy_dots"))
+    structure(dots, class = c("common", "lazy_dots"))
   )
   execute(.obj, query)
 }
@@ -168,8 +178,8 @@ as.json.bool <- function(x, ...){
 
 as.json.geoshape <- function(x, field, ...){
   out <- list()
-  for(i in seq_along(x)){
-    dat <- if(is.character(x[[i]]$expr)){
+  for (i in seq_along(x)) {
+    dat <- if (is.character(x[[i]]$expr)) {
       unbox(x[[i]]$expr)
     } else {
       list(eval(x[[i]]$expr))
@@ -204,7 +214,8 @@ get_eq <- function(y) {
               eq = dat$token[ dat$token %in% c("LT","GT","GE","LE","EQ_ASSIGN","EQ","NE") ],
               num = dat[ dat$token == "NUM_CONST", "text"]
   )
-  tmp$eq <- switch(tolower(tmp$eq), lt="lt", gt="gt", ge="gte", le="lte", eq_assign=NA, eq=NA)
+  tmp$eq <- switch(tolower(tmp$eq), lt = "lt", gt = "gt", ge = "gte",
+                   le = "lte", eq_assign = NA, eq = NA)
   tmp
 }
 

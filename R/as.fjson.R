@@ -42,6 +42,11 @@ as.fjson.query <- function(x, ...){
   jsonlite::toJSON(x, ..., auto_unbox = TRUE)
 }
 
+as.fjson.esdsl <- function(x, ...){
+  x <- list(query = list(range = parse_range(get_eq(x[[1]]))))
+  jsonlite::toJSON(x, ..., auto_unbox = TRUE)
+}
+
 as.fjson.range <- function(x, ...){
   x <- list(query = list(range = parse_range(get_eq(x[[1]]))))
   jsonlite::toJSON(x, ..., auto_unbox = TRUE)
