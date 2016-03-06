@@ -13,7 +13,7 @@ describe(.data)
 Explain a query
 }
 \examples{
-elastic::connect("http://192.168.99.100")
+elastic::connect()
 
 shakespeare <- system.file("examples", "shakespeare_data.json", package = "elastic")
 invisible(elastic::docs_bulk(shakespeare))
