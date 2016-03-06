@@ -1,7 +1,7 @@
 library('testthat')
 library('elasticdsl')
 
-if(Sys.getenv("ES_IP") != "") {
+if (Sys.getenv("ES_IP") != "") {
   # The ES_IP environmental var can be set the root ip of the
   # Elasticsearch for convenience. Continuous integration uses
   # the default localhost address.
@@ -14,6 +14,7 @@ if(Sys.getenv("ES_IP") != "") {
   invisible(elastic::connect())
 }
 
+library('elastic')
 shakespeare <- system.file("examples", "shakespeare_data.json", package = "elastic")
 invisible(elastic::docs_bulk(shakespeare))
 gbif <- system.file("examples", "gbif_data.json", package = "elastic")
