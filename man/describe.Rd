@@ -13,18 +13,22 @@ describe(.data)
 Explain a query
 }
 \examples{
-elastic::connect()
+elastic::connect("http://192.168.99.100")
+
 shakespeare <- system.file("examples", "shakespeare_data.json", package = "elastic")
-elastic::docs_bulk(shakespeare)
-index("shakespeare") \%>\% range( speech_number <= 5 ) \%>\% describe
+invisible(elastic::docs_bulk(shakespeare))
+# index("shakespeare") \%>\% range( speech_number <= 5 ) \%>\% describe
 
 index("shakespeare") \%>\%
    bool(must_not = list(term=list(speaker="KING HENRY IV"))) \%>\%
    describe
 
+geoshape <- system.file("examples", "gbif_geoshape.json", package = "elastic")
+invisible(elastic::docs_bulk(geoshape))
 index("geoshape") \%>\%
    geoshape(field = "location", type = "envelope",
             coordinates = list(c(-30, 50), c(30, 0))) \%>\%
    describe()
+
 }
 
