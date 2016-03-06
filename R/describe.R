@@ -5,7 +5,7 @@
 #' @examples
 #' elastic::connect()
 #' shakespeare <- system.file("examples", "shakespeare_data.json", package = "elastic")
-#' docs_bulk(shakespeare)
+#' elastic::docs_bulk(shakespeare)
 #' index("shakespeare") %>% range( speech_number <= 5 ) %>% describe
 #'
 #' index("shakespeare") %>%
