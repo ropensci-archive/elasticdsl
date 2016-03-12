@@ -1,5 +1,9 @@
 #' Execute Elasticsearch query
 #'
+#' @param .obj
+#' @param query
+#' @param ...
+#'
 #' @export
 #' @rdname utils
 exec <- function(.obj, query, ...) {
