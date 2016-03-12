@@ -32,6 +32,10 @@
 #' }
 NULL
 
+#' The number of returned documents
+#'
+#' @param .data A list returned by a query
+#'
 #' @export
 #' @rdname utils
 n <- function(.data) {

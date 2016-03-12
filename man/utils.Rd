@@ -26,11 +26,13 @@ sort(.obj = list(), ...)
 sort_(.obj = list(), ..., .dots)
 }
 \arguments{
-\item{.obj}{}
+\item{.obj}{Input}
 
-\item{query}{}
+\item{query}{Query statement}
 
-\item{...}{}
+\item{...}{Further args passed on to \code{\link[jsonlite]{toJSON}}}
+
+\item{.data}{A list returned by a query}
 
 \item{x}{Input}
 
@@ -39,17 +41,13 @@ sort_(.obj = list(), ..., .dots)
 \item{y}{Input}
 
 \item{.dots}{Input}
-
-\item{.obj}{Input}
-
-\item{query}{Query statement}
-
-\item{...}{Further args passed on to \code{\link[jsonlite]{toJSON}}}
 }
 \description{
 Execute Elasticsearch query
 
 elastic DSL utilities
+
+The number of returned documents
 }
 \details{
 Various utilities.
