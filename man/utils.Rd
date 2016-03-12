@@ -26,11 +26,11 @@ sort(.obj = list(), ...)
 sort_(.obj = list(), ..., .dots)
 }
 \arguments{
-\item{.obj}{Input}
+\item{.obj}{}
 
-\item{query}{Query statement}
+\item{query}{}
 
-\item{...}{Further args passed on to \code{\link[jsonlite]{toJSON}}}
+\item{...}{}
 
 \item{x}{Input}
 
@@ -39,6 +39,12 @@ sort_(.obj = list(), ..., .dots)
 \item{y}{Input}
 
 \item{.dots}{Input}
+
+\item{.obj}{Input}
+
+\item{query}{Query statement}
+
+\item{...}{Further args passed on to \code{\link[jsonlite]{toJSON}}}
 }
 \description{
 Execute Elasticsearch query
