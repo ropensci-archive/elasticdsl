@@ -32,6 +32,8 @@ sort_(.obj = list(), ..., .dots)
 
 \item{...}{Further args passed on to \code{\link[jsonlite]{toJSON}}}
 
+\item{.data}{A list returned by a query}
+
 \item{x}{Input}
 
 \item{pretty}{Pretty print}
@@ -44,6 +46,8 @@ sort_(.obj = list(), ..., .dots)
 Execute Elasticsearch query
 
 elastic DSL utilities
+
+The number of returned documents
 }
 \details{
 Various utilities.
