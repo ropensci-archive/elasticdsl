@@ -16,18 +16,18 @@ test_that("ids_", {
   expect_true("ids" %in% class(ids_(c(1, 2))[[1]]))
 })
 
-test_that("ids", {
-  expect_equal(
-    index("shakespeare") %>%
-      filter() %>%
-      ids(c(1, 2)) %>%
-      exec() %>%
-      hits() %>%
-      sapply(., FUN = function(i) { i$`_id` }) %>%
-      as.integer() %>%
-      sort.default(),
-    c(1, 2))
-})
+# test_that("ids", {
+#   expect_equal(
+#     index("shakespeare") %>%
+#       filter() %>%
+#       ids(c(1, 2)) %>%
+#       exec() %>%
+#       hits() %>%
+#       sapply(., FUN = function(i) { i$`_id` }) %>%
+#       as.integer() %>%
+#       sort.default(),
+#     c(1, 2))
+# })
 
 test_that("operands", {
   expect_equal(index("shakespeare") %>% and() %>% attr("operand"), "and")
