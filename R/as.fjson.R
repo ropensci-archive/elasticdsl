@@ -4,11 +4,11 @@ as.fjson.comb <- function(x, ...){
   oper <- attr(x, "operand")
 
   # get parameters to pass to query
-  params <- Filter(function(z) is(z, "params"), x)
+  params <- Filter(function(z) inherits(z, "params"), x)
   params2 <- lapply(params, as.query, comb = TRUE)
 
   # remove parameter inputs
-  x <- Filter(function(z) !is(z, "params"), x)
+  x <- Filter(function(z) !inherits(z, "params"), x)
   out <- lapply(x, as.query, comb = TRUE)
   if (length(out) == 1) out <- out[[1]]
 
@@ -16,7 +16,7 @@ as.fjson.comb <- function(x, ...){
     if (is.null(oper)) {
       quer <- list(query = list(filtered = list(filter = out)))
     } else {
-      quer <- list(query = list(filtered = list(filter = setNames(list(out), oper))))
+      quer <- list(query = list(filtered = list(filter = stats::setNames(list(out), oper))))
     }
   } else {
     quer <- list(query = out)
@@ -53,7 +53,7 @@ as.fjson.range <- function(x, ...){
 }
 
 as.fjson.bool <- function(x, ...){
-  tmp <- setNames(list(lazy_eval(x[[1]]$expr)), names(x))
+  tmp <- stats::setNames(list(lazy_eval(x[[1]]$expr)), names(x))
   x <- list(query = list(bool = tmp))
   jsonlite::toJSON(x, ..., auto_unbox = TRUE)
 }
@@ -68,14 +68,14 @@ as.fjson.geoshape <- function(x, field, ...){
     }
     out[[names(x[i])]] <- dat
   }
-  tmp <- setNames(list(list(shape = out)), field)
+  tmp <- stats::setNames(list(list(shape = out)), field)
   alldat <- list(query = list(geo_shape = tmp))
   json <- jsonlite::toJSON(alldat, ..., auto_unbox = TRUE)
   gsub_geoshape(out$type[[1]], json)
 }
 
 as.fjson.common <- function(x, field, ...){
-  tmp <- setNames(list(list(query = as.character(x$query$expr),
+  tmp <- stats::setNames(list(list(query = as.character(x$query$expr),
                             cutoff_frequency = as.numeric(x$cutoff_frequency$expr))),
                   as.character(x$field$expr))
   alldat <- list(query = list(common = tmp))
@@ -83,7 +83,7 @@ as.fjson.common <- function(x, field, ...){
 }
 
 as.fjson.missing <- function(x, field, ...){
-  tmp <- setNames(list(list(query = as.character(x$query$expr),
+  tmp <- stats::setNames(list(list(query = as.character(x$query$expr),
                             existence = existence, null_value = null_value),
                        as.character(x$field$expr)))
   alldat <- list(query = list(common = tmp))
@@ -91,13 +91,13 @@ as.fjson.missing <- function(x, field, ...){
 }
 
 as.fjson.prefix <- function(x, field, ...){
-  tmp <- setNames(list(x[[1]]$expr), names(x))
+  tmp <- stats::setNames(list(x[[1]]$expr), names(x))
   alldat <- list(query = list(constant_score = list(filter = list(prefix = tmp))))
   jsonlite::toJSON(alldat, ..., auto_unbox = TRUE)
 }
 
 as.fjson.ids <- function(x, ...){
-  tmp <- setNames(list(eval(x[[1]]$expr)), "values")
+  tmp <- stats::setNames(list(eval(x[[1]]$expr)), "values")
   alldat <- list(query = list(filtered = list(filter = list(ids = tmp))))
   jsonlite::toJSON(alldat, ..., auto_unbox = TRUE)
 }

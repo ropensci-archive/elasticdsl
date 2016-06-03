@@ -10,7 +10,7 @@ as.query <- function(x, comb = FALSE, ...){
 
 #' @export
 as.query.prefix <- function(x, comb=FALSE, ...){
-  tmp <- setNames(list(x[[1]]$expr), names(x))
+  tmp <- stats::setNames(list(x[[1]]$expr), names(x))
   if(comb){
     list(prefix = tmp)
   } else {
@@ -20,7 +20,7 @@ as.query.prefix <- function(x, comb=FALSE, ...){
 
 #' @export
 as.query.ids <- function(x, comb=FALSE, ...){
-  tmp <- setNames(list(eval(x[[1]]$expr)), "values")
+  tmp <- stats::setNames(list(eval(x[[1]]$expr)), "values")
   if(comb){
     list(ids = tmp)
   } else {
@@ -30,7 +30,7 @@ as.query.ids <- function(x, comb=FALSE, ...){
 
 #' @export
 as.query.bool <- function(x, comb=FALSE, ...){
-  tmp <- setNames(list(lazy_eval(x[[1]]$expr)), names(x))
+  tmp <- stats::setNames(list(lazy_eval(x[[1]]$expr)), names(x))
   if(comb){
     list(bool = tmp)
   } else {
@@ -59,6 +59,6 @@ as.query.params <- function(x, comb=FALSE, ...){
 
 paramfun <- function(z) {
   tried <- tryCatch(deparse(z$expr), error = function(e) e)
-  if (is(tried, "simpleError")) tried <- z[[1]]
-  setNames(list(tried), attr(z, "param"))
+  if (inherits(tried, "simpleError")) tried <- z[[1]]
+  stats::setNames(list(tried), attr(z, "param"))
 }

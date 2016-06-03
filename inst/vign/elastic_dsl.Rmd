@@ -1,6 +1,7 @@
 <!--
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{elastic DSL}
+%\VignetteEncoding{UTF-8}
 -->
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -45,7 +46,7 @@ index("shakespeare") %>%
    Search()
 ```
 
-Or, if you want to modify something about the search you can add on `Search()` like 
+Or, if you want to modify something about the search you can add on `Search()` like
 
 ```{r eval=FALSE}
 index("shakespeare") %>%

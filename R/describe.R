@@ -2,7 +2,7 @@
 #'
 #' @export
 #' @param .data (list) input, using higher level interface
-#' @examples
+#' @examples \dontrun{
 #' elastic::connect()
 #'
 #' shakespeare <- system.file("examples", "shakespeare_data.json", package = "elastic")
@@ -19,7 +19,7 @@
 #'    geoshape(field = "location", type = "envelope",
 #'             coordinates = list(c(-30, 50), c(30, 0))) %>%
 #'    describe()
-#'
+#' }
 describe <- function(.data) {
   pipe_autoexec(toggle = FALSE)
   if (!inherits(.data, "esdsl")) stop("must be of class esdsl", call. = FALSE)

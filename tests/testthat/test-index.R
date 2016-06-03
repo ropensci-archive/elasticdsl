@@ -1,5 +1,7 @@
 context("index.R")
 
+invisible(elastic::connect())
+
 first_available_index <- indices()[[1]]
 
 
@@ -8,7 +10,7 @@ test_that("index() returns the right class", {
 })
 
 test_that("indices returns at least one index", {
-  expect_more_than(length(indices()), 0)
+  expect_gt(length(indices()), 0)
 })
 
 test_that("get_map", {

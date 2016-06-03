@@ -13,8 +13,8 @@
 #' index("plos")
 #' index("gbif")
 #' }
-index <- function(index, type=NULL, what="mappings", ...){
-  structure(get_map(index, type, ...), class="index", index=index, type=type)
+index <- function(index, type = NULL, what = "mappings", ...) {
+  structure(get_map(index, type, ...), class = "index", index = index, type = type)
 }
 
 #' List cluster-wide indices
@@ -22,7 +22,7 @@ index <- function(index, type=NULL, what="mappings", ...){
 #' @export
 #'
 #' @examples \dontrun{
-#'   indices()
+#' indices()
 #' }
 indices <- function() {
   names(index_settings())
@@ -34,9 +34,9 @@ print.index <- function(x, ...){
   cat("  type:", attr(x, "type"), "\n")
   nmz <- names(x)
   cat("  mappings:", "\n")
-  for(i in seq_along(nmz)){
+  for (i in seq_along(nmz)) {
     cat(sprintf("    %s:", nmz[i]), "\n")
-    for(j in seq_along(x[[i]]$properties)){
+    for (j in seq_along(x[[i]]$properties)) {
       tmp <- x[[i]]$properties[j]
       cat(sprintf("      %s: %s", names(tmp), tmp[[1]]$type), "\n")
     }
@@ -51,7 +51,7 @@ print.index <- function(x, ...){
 # pluck(shake$line$properties, "type", "")
 # shake$scene
 # shake$act
-get_map <- function(index, type=NULL, ...){
+get_map <- function(index, type = NULL, ...){
   tmp <- mapping_get(index, type, ...)
   tmp[[index]]$mappings
 }

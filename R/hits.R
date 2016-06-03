@@ -8,6 +8,6 @@
 #'  exec() %>%
 #'  hits()
 #' }
-hits <- function(x){
+hits <- function(x) {
   x$hits$hits
 }

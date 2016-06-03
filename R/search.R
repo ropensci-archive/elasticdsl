@@ -7,7 +7,7 @@
 #' @param ... Further args passed on to \code{\link[elastic]{Search}}
 #' @rdname Search
 Search_ <- function(.obj = "", body = list(), params = list(), ...){
-  obj <- if (is(.obj, "index")) {
+  obj <- if (inherits(.obj, "index")) {
     attr(.obj, "index")
   } else {
     .obj

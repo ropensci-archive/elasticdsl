@@ -11,7 +11,7 @@ List cluster-wide indices
 }
 \examples{
 \dontrun{
-  indices()
+indices()
 }
 }
 
