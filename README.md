@@ -14,6 +14,13 @@ elasticdsl
 * [API docs](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/index.html)
 * This client is being developed under `v1.4` of Elasticsearch.
 
+## Security
+
+You're fine running ES locally on your machine, but be careful just throwing up ES on a server with a public IP address - make sure to think about security.
+
+* [Shield](https://www.elastic.co/products/shield) - This is a paid product provided by Elastic - so probably only applicable to enterprise users
+* DIY security - there are a variety of techniques for securing your Elasticsearch. A number of resources are collected in a [blog post](http://recology.info/2015/02/secure-elasticsearch/) - tools include putting your ES behind something like Nginx, putting basic auth on top of it, using https, etc.
+
 ## Install elasticdsl
 
 
