@@ -15,6 +15,14 @@
 #'  \url{http://recology.info/2015/02/secure-elasticsearch/}
 #' }
 #'
+#' @examples \dontrun{
+#' # start Elasticsearch, then connect
+#' elastic::connect()
+#'
+#' # Search on the index 'shakespeare', and for the prefix 'we'
+#' index("shakespeare") %>% query("prefix", speaker = "we")
+#' }
+#'
 #' @import elastic
 #' @import lazyeval
 #' @importFrom jsonlite unbox

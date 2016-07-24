@@ -27,6 +27,10 @@ getfiltered <- function(x){
   )
 }
 
+pop <- function(x, y){
+  x[!names(x) %in% y]
+}
+
 popindex <- function(x){
   clz <- class(x)
   switch(clz[1],
@@ -63,3 +67,8 @@ combine <- function(.obj, ..., .dots){
   list(.obj, lazyeval::all_dots(.dots, ...))
 }
 
+cl <- function(x) if (is.null(x)) NULL else paste0(x, collapse = ",")
+
+desc <- function(x) {
+  -xtfrm(x)
+}

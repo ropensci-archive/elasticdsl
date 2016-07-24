@@ -3,14 +3,14 @@
 \name{query}
 \alias{query}
 \alias{query_}
-\title{Elasticsearch DSL}
+\title{query dsl}
 \usage{
-query(.obj = list(), ...)
+query(.data = list(), ...)
 
-query_(.obj = list(), ..., .dots)
+query_(.data = list(), ..., .dots)
 }
 \arguments{
-\item{.obj}{An index object. If nothing passed defaults to all indices, equivalent to
+\item{.data}{An index object. If nothing passed defaults to all indices, equivalent to
 doing e.g., \code{localhost:9200/_search}}
 
 \item{...}{Further args passed on}
@@ -18,7 +18,7 @@ doing e.g., \code{localhost:9200/_search}}
 \item{.dots}{Explanation...}
 }
 \description{
-Elasticsearch DSL
+query dsl
 }
 \details{
 The DSL for \code{elastic} makes it easy to do queries against an Elasticsearch
@@ -39,7 +39,7 @@ what \code{dplyr} does.
 \dontrun{
 elastic::connect(errors = "complete")
 
-query()
+index("shakespeare") \%>\% query("prefix", speaker = "we")
 }
 }
 

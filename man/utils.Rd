@@ -3,27 +3,12 @@
 \name{exec}
 \alias{exec}
 \alias{fields}
-\alias{glimpse}
-\alias{n}
-\alias{size}
-\alias{sort}
-\alias{sort_}
 \alias{utils}
 \title{Execute Elasticsearch query}
 \usage{
 exec(.obj, query, ...)
 
-n(.data)
-
-glimpse(x, pretty = TRUE, ...)
-
 fields(x, ...)
-
-size(x, y)
-
-sort(.obj = list(), ...)
-
-sort_(.obj = list(), ..., .dots)
 }
 \arguments{
 \item{.obj}{Input}
@@ -31,8 +16,6 @@ sort_(.obj = list(), ..., .dots)
 \item{query}{Query statement}
 
 \item{...}{Further args passed on to \code{\link[jsonlite]{toJSON}}}
-
-\item{.data}{A list returned by a query}
 
 \item{x}{Input}
 
@@ -46,8 +29,6 @@ sort_(.obj = list(), ..., .dots)
 Execute Elasticsearch query
 
 elastic DSL utilities
-
-The number of returned documents
 }
 \details{
 Various utilities.
