@@ -5,6 +5,7 @@ elasticdsl
 
 [![Build Status](https://api.travis-ci.org/ropensci/elasticdsl.svg)](https://travis-ci.org/ropensci/elasticdsl)
 [![Build status](https://ci.appveyor.com/api/projects/status/r810moreouuq18ox?svg=true)](https://ci.appveyor.com/project/sckott/elasticdsl)
+[![codecov.io](https://codecov.io/github/ropensci/elasticdsl/coverage.svg?branch=master)](https://codecov.io/github/ropensci/elasticdsl?branch=master)
 
 **An R DSL for [Elasticsearch](http://elasticsearch.org)**
 
