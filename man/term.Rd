@@ -24,7 +24,7 @@ term dsl
 \dontrun{
 elastic::connect(errors = "complete")
 
-index("shakespeare") \%>\% term(speaker = HOTSPUR)
+index("shakespeare") \%>\% term(speaker = FALSTAFF)
 }
 }
 

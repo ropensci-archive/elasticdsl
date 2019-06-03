@@ -23,12 +23,10 @@ various ways your data in formatted in your Elasticsearch instance.
 \examples{
 \dontrun{
 elastic::connect()
-x <- index("shakespeare") \%>\%
-  filter() \%>\%
+
+index("shakespeare") \%>\%
   prefix(speaker = "we") \%>\%
-  size(200) \%>\%
-  exec()
-x \%>\% tabl()
+  size(200) \%>\% tabl()
 
 x <- index("shakespeare") \%>\%
   filter() \%>\%

@@ -2,7 +2,7 @@
 % Please edit documentation in R/hits.R
 \name{hits}
 \alias{hits}
-\title{Get results}
+\title{Get results (hits slot)}
 \usage{
 hits(x)
 }
@@ -10,13 +10,12 @@ hits(x)
 \item{x}{Input}
 }
 \description{
-Get results
+Get results (hits slot)
 }
 \examples{
 \dontrun{
 index("shakespeare") \%>\%
- ids(c(1, 2, 150)) \%>\%
- exec() \%>\%
+ ids(1, 2, 150) \%>\%
  hits()
 }
 }

@@ -7,5 +7,5 @@
 #' }
 n <- function(.data) {
   pipe_autoexec(toggle = FALSE)
-  exec2(structure(.data, class = "esdsl"))$hits$total
+  exec2(structure(as_esdsl(.data), class = "esdsl"))$hits$total
 }

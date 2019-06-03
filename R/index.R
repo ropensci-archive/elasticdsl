@@ -17,6 +17,10 @@ index <- function(index, type = NULL, what = "mappings", ...) {
   structure(get_map(index, type, ...), class = "index", index = index, type = type)
 }
 
+# index_ <- function(index, type = NULL, what = "mappings", ...) {
+#   structure(get_map(index, type, ...), class = "index", index = index, type = type)
+# }
+
 #' List cluster-wide indices
 #'
 #' @export

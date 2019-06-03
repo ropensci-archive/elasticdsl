@@ -8,10 +8,6 @@
 \description{
 elasticdsl: An Elasticsearch DSL R client.
 }
-\section{Hello World}{
-
-}
-
 \section{Security}{
 
 

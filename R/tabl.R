@@ -9,12 +9,10 @@
 #' various ways your data in formatted in your Elasticsearch instance.
 #' @examples \dontrun{
 #' elastic::connect()
-#' x <- index("shakespeare") %>%
-#'   filter() %>%
+#'
+#' index("shakespeare") %>%
 #'   prefix(speaker = "we") %>%
-#'   size(200) %>%
-#'   exec()
-#' x %>% tabl()
+#'   size(200) %>% tabl()
 #'
 #' x <- index("shakespeare") %>%
 #'   filter() %>%
@@ -24,6 +22,7 @@
 #' x %>% tabl()
 #' }
 tabl <- function(x, source_only = TRUE, n = 10){
-  z <- x$hits$hits
-  dplyr::rbind_all(lapply(pluck(z, "_source"), dplyr::as_data_frame))
+  pipe_autoexec(toggle = TRUE)
+  z <- exec2(structure(as_esdsl(x), class = "esdsl"))$hits$hits
+  dplyr::bind_rows(lapply(pluck(z, "_source"), dplyr::as_data_frame))
 }

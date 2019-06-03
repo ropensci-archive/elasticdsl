@@ -1,13 +1,13 @@
-#' Get results
+#' Get results (hits slot)
 #'
 #' @export
 #' @param x Input
 #' @examples \dontrun{
 #' index("shakespeare") %>%
-#'  ids(c(1, 2, 150)) %>%
-#'  exec() %>%
+#'  ids(1, 2, 150) %>%
 #'  hits()
 #' }
 hits <- function(x) {
-  x$hits$hits
+  pipe_autoexec(toggle = TRUE)
+  exec2(structure(as_esdsl(x), class = "esdsl"))$hits$hits
 }

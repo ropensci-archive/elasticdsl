@@ -1,5 +1,6 @@
 #' query dsl
 #'
+#' @export
 #' @param .data An index object. If nothing passed defaults to all indices, equivalent to
 #' doing e.g., \code{localhost:9200/_search}
 #' @param .dots Explanation...
@@ -30,7 +31,6 @@ query <- function(.data=list(), ...) {
 #' @export
 #' @rdname query
 query_ <- function(.data=list(), ..., .dots) {
-  #message("not ready yet - see https://github.com/ropensci/elasticdsl/issues/20")
   pipe_autoexec(toggle = TRUE)
   dots <- lazyeval::all_dots(.dots, ...)
   # first lazy arg must be unnamed, of length 1, and be in an acceptable set

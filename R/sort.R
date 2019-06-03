@@ -1,9 +1,10 @@
 #' Sort documents
 #'
 #' @export
-#' @param .data Input
-#' @param .dots Input
+#' @param .data Input. An object of class \code{esdsl}, or something
+#' that can be coerced to that
 #' @param ...	Comma separated list of unquoted variable names
+#' @param .dots	Used to work around non-standard evaluation
 #' @examples \dontrun{
 #' index("gbif") %>% sort(asc(county))
 #' index("gbif") %>% sort(asc(county), desc(country))

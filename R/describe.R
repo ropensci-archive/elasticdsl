@@ -43,10 +43,12 @@ make_query <- function(x) {
 }
 
 es_make_url <- function(x) {
-  if (is.null(x$port) || nchar(x$port) == 0) {
-    x$base
+  tmp <- sprintf("%s://%s", x$transport, x$host)
+  if (!is.null(x$port) && nchar(x$port) != 0) {
+    tmp <- paste(tmp, x$port, sep = ":")
   }
-  else {
-    paste(x$base, ":", x$port, sep = "")
+  if (!is.null(x$path)) {
+    tmp <- file.path(tmp, x$path)
   }
+  sub('/$', '', tmp)
 }

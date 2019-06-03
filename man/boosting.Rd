@@ -45,8 +45,8 @@ boost <- '{
  }
 }'
 elastic::Search(index="shakespeare", body=boost)
-boosting(index("shakespeare"),
-   positive = list(term = list(play_name = "henry")),
+index("shakespeare") \%>\%
+ boosting(positive = list(term = list(play_name = "henry")),
    negative_boost = 0.8)
 index("shakespeare") \%>\%
  boosting(positive = list(term = list(play_name = "henry")),

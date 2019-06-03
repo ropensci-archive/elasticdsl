@@ -39,7 +39,6 @@ popindex <- function(x){
   )
 }
 
-# helpers
 gsub_geoshape <- function(type, x){
   switch(type,
          envelope = gsub('\\]\\]\\]', "\\]\\]", gsub('\\[\\[\\[', "\\[\\[", x)),
@@ -66,8 +65,6 @@ parse_range <- function(x){
 combine <- function(.obj, ..., .dots){
   list(.obj, lazyeval::all_dots(.dots, ...))
 }
-
-cl <- function(x) if (is.null(x)) NULL else paste0(x, collapse = ",")
 
 desc <- function(x) {
   -xtfrm(x)

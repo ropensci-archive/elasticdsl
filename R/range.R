@@ -1,5 +1,6 @@
 #' range dsl
 #'
+#' @export
 #' @param .obj An index object. If nothing passed defaults to all indices, equivalent to
 #' doing e.g., \code{localhost:9200/_search}
 #' @param boost Explanation...
@@ -12,8 +13,10 @@
 #' @examples \dontrun{
 #' elastic::connect(errors = "complete")
 #'
-#' index("shakespeare") %>% range( speech_number <= 5 )
-#' index("shakespeare") %>% range( speech_number >= 5 )
+#' x <- index("shakespeare") %>% range( speech_number <= 5 ) %>% size(200)
+#' max(vapply(x$hits$hits, "[[", 1, c("_source", "speech_number")))
+#' x <- index("shakespeare") %>% range( speech_number >= 5 ) %>% size(200)
+#' min(vapply(x$hits$hits, "[[", 1, c("_source", "speech_number")))
 #' # index("shakespeare") %>% range( speech_number <= c(1,5) ) # doens't work
 #' # index("shakespeare") %>% range( speech_number >= c(1,5) ) # doens't work
 #' }

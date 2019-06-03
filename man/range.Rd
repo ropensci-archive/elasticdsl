@@ -33,8 +33,10 @@ range dsl
 \dontrun{
 elastic::connect(errors = "complete")
 
-index("shakespeare") \%>\% range( speech_number <= 5 )
-index("shakespeare") \%>\% range( speech_number >= 5 )
+x <- index("shakespeare") \%>\% range( speech_number <= 5 ) \%>\% size(200)
+max(vapply(x$hits$hits, "[[", 1, c("_source", "speech_number")))
+x <- index("shakespeare") \%>\% range( speech_number >= 5 ) \%>\% size(200)
+min(vapply(x$hits$hits, "[[", 1, c("_source", "speech_number")))
 # index("shakespeare") \%>\% range( speech_number <= c(1,5) ) # doens't work
 # index("shakespeare") \%>\% range( speech_number >= c(1,5) ) # doens't work
 }

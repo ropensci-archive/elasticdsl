@@ -1,5 +1,6 @@
 #' term dsl
 #'
+#' @export
 #' @param .obj An index object. If nothing passed defaults to all indices, equivalent to
 #' doing e.g., \code{localhost:9200/_search}
 #' @param .dots Explanation...
@@ -7,7 +8,7 @@
 #' @examples \dontrun{
 #' elastic::connect(errors = "complete")
 #'
-#' index("shakespeare") %>% term(speaker = HOTSPUR)
+#' index("shakespeare") %>% term(speaker = FALSTAFF)
 #' }
 term <- function(.obj=list(), ...) {
   term_(.obj, .dots = lazyeval::lazy_dots(...))
@@ -19,5 +20,6 @@ term_ <- function(.obj=list(), ..., .dots) {
   pipe_autoexec(toggle = TRUE)
   dots <- lazyeval::all_dots(.dots, ...)
   query <- as.json(structure(dots, class = c("term", "lazy_dots")))
-  structure(list(index = .obj, query = query), class = "esdsl")
+  query
+  #structure(list(index = .obj, query = query), class = "esdsl")
 }
