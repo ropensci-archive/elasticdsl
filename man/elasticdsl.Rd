@@ -5,9 +5,6 @@
 \alias{elasticdsl}
 \alias{elasticdsl-package}
 \title{elasticdsl: An Elasticsearch DSL R client.}
-\description{
-elasticdsl: An Elasticsearch DSL R client.
-}
 \section{Security}{
 
 
@@ -24,6 +21,7 @@ necessary precautions. There are a few options:
  \url{http://recology.info/2015/02/secure-elasticsearch/}
 }
 }
+
 \examples{
 \dontrun{
 # start Elasticsearch, then connect
@@ -37,4 +35,3 @@ index("shakespeare") \%>\% query("prefix", speaker = "we")
 \author{
 Scott Chamberlain
 }
-

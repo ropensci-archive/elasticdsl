@@ -30,4 +30,3 @@ index("shakespeare") \%>\%
  n()
 }
 }
-

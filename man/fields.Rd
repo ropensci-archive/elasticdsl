@@ -25,4 +25,3 @@ Retrieve specific fields
 index("shakespeare") \%>\% fields(play_name, speaker)
 }
 }
-

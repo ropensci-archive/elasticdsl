@@ -13,4 +13,3 @@ doing e.g., \code{localhost:9200/_search}}
 \description{
 Prevent executing search
 }
-

@@ -49,4 +49,3 @@ index("geoshape") \%>\%
    n()
 }
 }
-

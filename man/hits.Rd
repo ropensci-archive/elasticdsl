@@ -19,4 +19,3 @@ index("shakespeare") \%>\%
  hits()
 }
 }
-

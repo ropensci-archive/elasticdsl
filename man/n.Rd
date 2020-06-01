@@ -17,4 +17,3 @@ Get a count of number of documents found
 index("gbif") \%>\% n()
 }
 }
-

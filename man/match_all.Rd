@@ -24,4 +24,3 @@ index("shakespeare") \%>\% match_all()
 index("shakespeare") \%>\% match_all(boost = 2)
 }
 }
-

@@ -14,4 +14,3 @@ List cluster-wide indices
 indices()
 }
 }
-

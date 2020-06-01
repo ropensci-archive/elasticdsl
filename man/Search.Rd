@@ -18,4 +18,3 @@ Search_(.obj = "", body = list(), params = list(), ...)
 \description{
 Search method for the DSL
 }
-

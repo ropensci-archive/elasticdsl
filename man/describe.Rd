@@ -32,4 +32,3 @@ index("geoshape") \%>\%
    describe()
 }
 }
-

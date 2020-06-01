@@ -5,8 +5,14 @@
 \alias{range_}
 \title{range dsl}
 \usage{
-range(.obj = list(), ..., boost = 1, time_zone = NULL, execution = NULL,
-  cache = FALSE)
+range(
+  .obj = list(),
+  ...,
+  boost = 1,
+  time_zone = NULL,
+  execution = NULL,
+  cache = FALSE
+)
 
 range_(.obj = list(), ..., .dots)
 }
@@ -41,4 +47,4 @@ min(vapply(x$hits$hits, "[[", 1, c("_source", "speech_number")))
 # index("shakespeare") \%>\% range( speech_number >= c(1,5) ) # doens't work
 }
 }
-
+\concept{query-dsl}

@@ -23,4 +23,3 @@ filter(term, speaker = "KING HENRY IV")
 }
 }
 \keyword{internal}
-

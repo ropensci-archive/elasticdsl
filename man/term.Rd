@@ -27,4 +27,3 @@ elastic::connect(errors = "complete")
 index("shakespeare") \%>\% term(speaker = FALSTAFF)
 }
 }
-

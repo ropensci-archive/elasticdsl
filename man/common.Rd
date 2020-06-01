@@ -5,11 +5,23 @@
 \alias{common_}
 \title{common dsl}
 \usage{
-common(.obj = list(), field, query = NULL, cutoff_frequency = NULL,
-  low_freq_operator = NULL, minimum_should_match = NULL)
+common(
+  .obj = list(),
+  field,
+  query = NULL,
+  cutoff_frequency = NULL,
+  low_freq_operator = NULL,
+  minimum_should_match = NULL
+)
 
-common_(.obj = list(), field, query = NULL, cutoff_frequency = NULL,
-  low_freq_operator = NULL, minimum_should_match = NULL)
+common_(
+  .obj = list(),
+  field,
+  query = NULL,
+  cutoff_frequency = NULL,
+  low_freq_operator = NULL,
+  minimum_should_match = NULL
+)
 }
 \arguments{
 \item{.obj}{An index object. If nothing passed defaults to all indices, equivalent to
@@ -58,4 +70,3 @@ body <- '{
 elastic::Search('shakespeare', body=body)
 }
 }
-

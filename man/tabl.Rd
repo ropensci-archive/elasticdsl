@@ -36,4 +36,3 @@ x <- index("shakespeare") \%>\%
 x \%>\% tabl()
 }
 }
-

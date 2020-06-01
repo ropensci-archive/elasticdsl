@@ -42,4 +42,3 @@ elastic::connect(errors = "complete")
 index("shakespeare") \%>\% query("prefix", speaker = "we")
 }
 }
-

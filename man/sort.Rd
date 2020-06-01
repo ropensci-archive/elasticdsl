@@ -26,4 +26,3 @@ index("gbif") \%>\% sort(asc(county))
 index("gbif") \%>\% sort(asc(county), desc(country))
 }
 }
-

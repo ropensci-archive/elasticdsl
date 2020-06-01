@@ -9,4 +9,3 @@ exec(.obj, query, ...)
 \description{
 Execute Elasticsearch query
 }
-

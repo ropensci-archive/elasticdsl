@@ -31,4 +31,3 @@ index("shakespeare") \%>\%
    bool(should = list(list(term=list(speech_number=1))))
 }
 }
-

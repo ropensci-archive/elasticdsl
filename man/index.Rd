@@ -27,4 +27,3 @@ index("plos")
 index("gbif")
 }
 }
-

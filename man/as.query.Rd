@@ -17,4 +17,3 @@ as.query(x, comb = FALSE, ...)
 As query functions
 }
 \keyword{internal}
-
